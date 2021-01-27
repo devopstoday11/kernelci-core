@@ -190,27 +190,35 @@ test_plans:
       job_timeout: '10'
       kselftest_collections: "lib"
 
-  ltp-crypto:
+  ltp: &ltp
     rootfs: debian_buster-ltp_nfs
     pattern: 'ltp/{category}-{method}-{protocol}-{rootfs}-ltp-template.jinja2'
     filters:
       - blocklist: *kselftest_defconfig_filter
-    params:
+    params: &ltp-params
       skip_install: "true"
-      tst_cmdfiles: "crypto"
+      tst_cmdfiles: ""
       job_timeout: '15'
       skipfile: skipfile-lkft.yaml
 
-  ltp-ipc:
-    rootfs: debian_buster-ltp_nfs
-    pattern: 'ltp/{category}-{method}-{protocol}-{rootfs}-ltp-template.jinja2'
-    filters:
-      - blocklist: *kselftest_defconfig_filter
+  ltp-crypto:
+    <<: *ltp
     params:
-      skip_install: "true"
+      <<: *ltp-params
+      tst_cmdfiles: "crypto"
+
+  ltp-ipc:
+    <<: *ltp
+    params:
+      <<: *ltp-params
       tst_cmdfiles: "ipc"
-      job_timeout: '15'
-      skipfile: skipfile-lkft.yaml
+
+  ltp-mm:
+    <<: *ltp
+    params:
+      <<: *ltp-params
+      tst_cmdfiles: "mm"
+      job_timeout: '30'
 
   preempt-rt:
     rootfs: debian_buster_nfs
@@ -1608,6 +1616,7 @@ test_configs:
       - baseline
       - ltp-crypto
       - ltp-ipc
+      - ltp-mm
       - sleep
       - usb
 
@@ -1630,6 +1639,7 @@ test_configs:
       - baseline-nfs
       - ltp-crypto
       - ltp-ipc
+      - ltp-mm
 
   - device_type: cubietruck
     test_plans:
@@ -1754,6 +1764,7 @@ test_configs:
       - baseline-nfs
       - ltp-crypto
       - ltp-ipc
+      - ltp-mm
       - sleep
       - usb
 
@@ -1825,6 +1836,7 @@ test_configs:
       - baseline-nfs
       - ltp-crypto
       - ltp-ipc
+      - ltp-mm
 
   - device_type: kirkwood-db-88f6282
     test_plans:
@@ -1955,6 +1967,7 @@ test_configs:
       - baseline-nfs
       - igt-kms-exynos
       - ltp-ipc
+      - ltp-mm
       - sleep
       - usb
 
@@ -2092,6 +2105,7 @@ test_configs:
       - baseline-nfs
       - ltp-crypto
       - ltp-ipc
+      - ltp-mm
       - sleep
       - usb
 
@@ -2106,6 +2120,7 @@ test_configs:
       - kselftest-lib
       - ltp-crypto
       - ltp-ipc
+      - ltp-mm
       - sleep
       - usb
 
@@ -2121,6 +2136,7 @@ test_configs:
       - kselftest
       - ltp-crypto
       - ltp-ipc
+      - ltp-mm
       - sleep
       - v4l2-compliance-uvc
 
@@ -2184,6 +2200,7 @@ test_configs:
       - baseline
       - ltp-crypto
       - ltp-ipc
+      - ltp-mm
 
   - device_type: sun50i-h6-pine-h64-model-b
     test_plans:
