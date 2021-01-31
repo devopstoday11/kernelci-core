@@ -44,6 +44,7 @@ do
     q )  quiet="--quiet";;
     Q )  qemu=true;;
     t )  tag_px=$OPTARG;;
+    Q )  qemu=true;;
     \? )
         echo "Invalid Option: -$OPTARG" 1>&2
         exit 1
